@@ -9,6 +9,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Signup from './Screen/Signup';
 import Login from './Screen/Login';
+import { AuthProvider } from './Components/AuthContext';
+import Home from './Screen/Home';
 
 const router = createBrowserRouter([
   {
@@ -19,12 +21,18 @@ const router = createBrowserRouter([
     path: "/login",
     element: <div><Login/></div>,
   },
+  {
+    path: "/",
+    element: <div><Home/></div>,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <AuthProvider>
     <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
 

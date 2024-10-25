@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../Components/AuthContext'
 
 function Login() {
 
@@ -7,11 +8,20 @@ function Login() {
     const[password,setPassword]=useState()
     const[error,setError]=useState()
     const[type,setType]=useState()
+    const {user,Login}=useAuth()
 
     const navigate=useNavigate()
 
     const submitlogin= async (e)=>{
         e.preventDefault()
+       
+        try {
+          await Login(email,password)
+            navigate('/')
+        }
+        catch(err){
+            setError(err)
+        }
         
     }
 
@@ -20,11 +30,11 @@ function Login() {
     <>
      <div className='fixed bg-neutral-200  top-0 left-0 w-full h-screen'></div>
     <div className='fixed w-full px-4 py-24 z-50'>
-          <div className='max-w-[450px]  mx-auto bg-gray-900 text-white rounded-lg'>
+          <div className='max-w-[450px]  mx-auto bg-gray-900 text-white rounded-lg animate-fadeIn'>
             <div className='max-w-[320px] mx-auto py-8'>
               <h1 className='text-3xl font-bold flex justify-center my-3'>Login</h1>
               {
-                    error ?<p className='bg-red-900 text-white p-3 rounded'>{error}</p>:null
+                    error ?<p className='bg-red-900 text-white p-3 rounded'>{error.message}</p>:null
               }
           <form className='w-full flex flex-col  py-4'>
             <input className='bg-gray-600 py-2 my-2 px-2' placeholder='Enter email' value={email} onChange={(e)=>setEmail(e.target.value)}></input>
